@@ -15,6 +15,8 @@ import { useCallback, useEffect, useState } from "react"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -199,6 +201,7 @@ function App() {
 
   return (
     <>
+      <ToastContainer />
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Box>
           <Stack>
@@ -238,6 +241,7 @@ function App() {
                       onClick={() => {
                         setSelectedMember(null)
                         submitData(null)
+                        toast.success("success clear member!")
                       }}
                     >
                       Clear
@@ -289,6 +293,8 @@ function App() {
                   setSelectedMember(arr)
 
                   submitData(item)
+
+                  toast.success("success select member!")
                 }}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
