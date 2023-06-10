@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   Divider,
   MantineProvider,
   Stack,
@@ -108,7 +107,7 @@ function App() {
   return (
     <>
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Center maw={800} mx="auto">
+        <Box>
           <Stack>
             <Box mt={20} h={180} mb={20}>
               <Title order={2}>Selected</Title>
@@ -117,7 +116,6 @@ function App() {
                   <>
                     <DataTable
                       mt={20}
-                      highlightOnHover
                       columns={[
                         { accessor: "name" },
                         { accessor: "department.title" },
@@ -126,9 +124,6 @@ function App() {
                         { accessor: "joined" },
                       ]}
                       records={selectedMember}
-                      onRowClick={(item) => {
-                        console.log(item)
-                      }}
                     />
                     <Button mt={10} onClick={() => setSelectedMember(null)}>
                       Clear
@@ -146,6 +141,13 @@ function App() {
                 mt={20}
                 highlightOnHover
                 columns={[
+                  {
+                    accessor: "index",
+                    title: "#",
+                    textAlignment: "right",
+                    width: 40,
+                    render: (record) => records && records.indexOf(record) + 1,
+                  },
                   { accessor: "name", sortable: true },
                   { accessor: "department.title", sortable: true },
                   { accessor: "email" },
@@ -165,7 +167,7 @@ function App() {
               />
             </Box>
           </Stack>
-        </Center>
+        </Box>
       </MantineProvider>
     </>
   )
