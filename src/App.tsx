@@ -11,7 +11,7 @@ import _ from "lodash"
 import useSWR from "swr"
 import axios from "axios"
 import { DataTable, DataTableSortStatus } from "mantine-datatable"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
@@ -21,6 +21,49 @@ dayjs.extend(timezone)
 
 const API_KEY = "Bb5vrvSJWHjL9OuummJntT7E5QOHCUOpk2jp"
 const BASE_URL = "https://uxszenfmbz.microcms.io/api/v1"
+
+type Message = {
+  id?: string // iFrame識別子
+  title?: string
+  description?: string
+  imageUrl?: string
+  updatedAt?: Date
+  data: Member
+}
+
+type Data = {
+  id: string
+  message: Message
+}
+
+type StyleMessage = {
+  height: number
+}
+
+type Style = {
+  id: string
+  message: StyleMessage
+}
+
+const microcmsPostData = (data: Data) => {
+  window.parent.postMessage(
+    {
+      ...data,
+      action: "MICROCMS_POST_DATA",
+    },
+    "https://uxszenfmbz.microcms.io"
+  )
+}
+
+const microcmsUpdateStyle = (style: Style) => {
+  window.parent.postMessage(
+    {
+      ...style,
+      action: "MICROCMS_UPDATE_STYLE",
+    },
+    "https://uxszenfmbz.microcms.io"
+  )
+}
 
 type swrResponse = {
   data: MemberResponse
@@ -89,6 +132,9 @@ function App() {
 
   const [records, setRecords] = useState<Member[] | undefined>(undefined)
 
+  const [id, setId] = useState<string>("")
+  const [extData, setExtData] = useState<Member | null>(null)
+
   useEffect(() => {
     setRecords(_.sortBy(data && data.contents, "name"))
   }, [data])
@@ -101,6 +147,47 @@ function App() {
     setRecords(sortStatus.direction === "desc" ? _data.reverse() : _data)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortStatus])
+
+  useEffect(() => {
+    if (extData) {
+      const arr = []
+      arr.push(extData)
+      setSelectedMember(arr)
+    }
+  }, [extData])
+
+  useEffect(() => {
+    window.addEventListener("message", (e) => {
+      if (
+        e.isTrusted === true &&
+        e.data.action === "MICROCMS_GET_DEFAULT_DATA"
+      ) {
+        setId(e.data.id)
+        setExtData(e.data.message?.data)
+        microcmsUpdateStyle({
+          id: e.data.id,
+          message: {
+            height: 500,
+          },
+        })
+      }
+    })
+  }, [])
+
+  const submitData = useCallback(
+    (item: Member) => {
+      setExtData(item)
+      microcmsPostData({
+        id,
+        message: {
+          title: item.name,
+          updatedAt: new Date(),
+          data: item,
+        },
+      })
+    },
+    [id]
+  )
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -191,6 +278,8 @@ function App() {
                   const arr = []
                   arr.push(item)
                   setSelectedMember(arr)
+
+                  submitData(item)
                 }}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
