@@ -12,6 +12,12 @@ import useSWR from "swr"
 import axios from "axios"
 import { DataTable, DataTableSortStatus } from "mantine-datatable"
 import { useEffect, useState } from "react"
+import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const API_KEY = "Bb5vrvSJWHjL9OuummJntT7E5QOHCUOpk2jp"
 const BASE_URL = "https://uxszenfmbz.microcms.io/api/v1"
@@ -118,10 +124,22 @@ function App() {
                       mt={20}
                       columns={[
                         { accessor: "name" },
-                        { accessor: "department.title" },
+                        {
+                          accessor: "department",
+                          render: (record) => record.department.title,
+                          sortable: true,
+                        },
                         { accessor: "email" },
-                        { accessor: "age" },
-                        { accessor: "joined" },
+                        { accessor: "age", sortable: true },
+                        {
+                          accessor: "joined",
+                          render: (record) =>
+                            dayjs
+                              .utc(record.joined)
+                              .tz("Asia/Tokyo")
+                              .format("YYYY/MM/DD"),
+                          sortable: true,
+                        },
                       ]}
                       records={selectedMember}
                     />
@@ -149,10 +167,22 @@ function App() {
                     render: (record) => records && records.indexOf(record) + 1,
                   },
                   { accessor: "name", sortable: true },
-                  { accessor: "department.title", sortable: true },
+                  {
+                    accessor: "department",
+                    render: (record) => record.department.title,
+                    sortable: true,
+                  },
                   { accessor: "email" },
                   { accessor: "age", sortable: true },
-                  { accessor: "joined", sortable: true },
+                  {
+                    accessor: "joined",
+                    render: (record) =>
+                      dayjs
+                        .utc(record.joined)
+                        .tz("Asia/Tokyo")
+                        .format("YYYY/MM/DD"),
+                    sortable: true,
+                  },
                 ]}
                 records={records}
                 onRowClick={(item) => {
