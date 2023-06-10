@@ -28,7 +28,7 @@ type Message = {
   description?: string
   imageUrl?: string
   updatedAt?: Date
-  data: Member
+  data: Member | null
 }
 
 type Data = {
@@ -167,7 +167,7 @@ function App() {
         microcmsUpdateStyle({
           id: e.data.id,
           message: {
-            height: 500,
+            height: 240,
           },
         })
       }
@@ -175,14 +175,14 @@ function App() {
   }, [])
 
   const submitData = useCallback(
-    (item: Member) => {
+    (item: Member | null) => {
       setExtData(item)
       microcmsPostData({
         id,
         message: {
-          title: item.name,
-          updatedAt: new Date(),
-          data: item,
+          title: item ? item.name : "",
+          description: item ? item.email : "",
+          data: item ? item : null,
         },
       })
     },
@@ -202,7 +202,7 @@ function App() {
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Box>
           <Stack>
-            <Box mt={20} h={180} mb={20}>
+            <Box mt={20} h={150} mb={20}>
               <Title order={2}>Selected</Title>
               <Box mt={10}>
                 {selectedMember ? (
@@ -230,7 +230,16 @@ function App() {
                       ]}
                       records={selectedMember}
                     />
-                    <Button mt={10} onClick={() => setSelectedMember(null)}>
+                    <Button
+                      mt={10}
+                      variant="outline"
+                      color="dark"
+                      size="xs"
+                      onClick={() => {
+                        setSelectedMember(null)
+                        submitData(null)
+                      }}
+                    >
                       Clear
                     </Button>
                   </>
