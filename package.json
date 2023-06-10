@@ -15,12 +15,15 @@
     "@mantine/hooks": "^6.0.13",
     "@mantine/modals": "^6.0.13",
     "axios": "^1.4.0",
+    "loadsh": "^0.0.4",
+    "lodash": "^4.17.21",
     "mantine-datatable": "^2.5.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "swr": "^2.1.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",

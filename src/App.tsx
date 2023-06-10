@@ -8,10 +8,11 @@ import {
   Text,
   Title,
 } from "@mantine/core"
+import _ from "lodash"
 import useSWR from "swr"
 import axios from "axios"
-import { DataTable } from "mantine-datatable"
-import { useState } from "react"
+import { DataTable, DataTableSortStatus } from "mantine-datatable"
+import { useEffect, useState } from "react"
 
 const API_KEY = "Bb5vrvSJWHjL9OuummJntT7E5QOHCUOpk2jp"
 const BASE_URL = "https://uxszenfmbz.microcms.io/api/v1"
@@ -76,6 +77,26 @@ function App() {
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
 
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+    columnAccessor: "name",
+    direction: "asc",
+  })
+
+  const [records, setRecords] = useState<Member[] | undefined>(undefined)
+
+  useEffect(() => {
+    setRecords(_.sortBy(data && data.contents, "name"))
+  }, [data])
+
+  useEffect(() => {
+    const _data = _.sortBy(
+      data && data.contents,
+      sortStatus.columnAccessor
+    ) as Member[]
+    setRecords(sortStatus.direction === "desc" ? _data.reverse() : _data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortStatus])
+
   if (isLoading) {
     return <div>Loading...</div>
   }
@@ -125,13 +146,13 @@ function App() {
                 mt={20}
                 highlightOnHover
                 columns={[
-                  { accessor: "name" },
-                  { accessor: "department.title" },
+                  { accessor: "name", sortable: true },
+                  { accessor: "department.title", sortable: true },
                   { accessor: "email" },
-                  { accessor: "age" },
-                  { accessor: "joined" },
+                  { accessor: "age", sortable: true },
+                  { accessor: "joined", sortable: true },
                 ]}
-                records={data.contents}
+                records={records}
                 onRowClick={(item) => {
                   console.log(item)
 
@@ -139,6 +160,8 @@ function App() {
                   arr.push(item)
                   setSelectedMember(arr)
                 }}
+                sortStatus={sortStatus}
+                onSortStatusChange={setSortStatus}
               />
             </Box>
           </Stack>
