@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Divider,
   MantineProvider,
@@ -10,6 +11,7 @@ import {
 import useSWR from "swr"
 import axios from "axios"
 import { DataTable } from "mantine-datatable"
+import { useState } from "react"
 
 const API_KEY = "Bb5vrvSJWHjL9OuummJntT7E5QOHCUOpk2jp"
 const BASE_URL = "https://uxszenfmbz.microcms.io/api/v1"
@@ -40,6 +42,7 @@ const useMicroCMSData = (endpoint: string): swrResponse => {
 }
 
 type Member = {
+  id: string
   name: string
   age: number
   email: string
@@ -67,8 +70,11 @@ type MemberResponse = {
 }
 
 function App() {
-  const params = "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title"
+  const params =
+    "?fields=id%2Cicon%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
+
+  const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -83,10 +89,33 @@ function App() {
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Center maw={800} mx="auto">
           <Stack>
-            <Box mt={20} h={100}>
+            <Box mt={20} h={180} mb={20}>
               <Title order={2}>Selected</Title>
               <Box mt={10}>
-                <Text>No one has been selected yet.</Text>
+                {selectedMember ? (
+                  <>
+                    <DataTable
+                      mt={20}
+                      highlightOnHover
+                      columns={[
+                        { accessor: "name" },
+                        { accessor: "department.title" },
+                        { accessor: "email" },
+                        { accessor: "age" },
+                        { accessor: "joined" },
+                      ]}
+                      records={selectedMember}
+                      onRowClick={(item) => {
+                        console.log(item)
+                      }}
+                    />
+                    <Button mt={10} onClick={() => setSelectedMember(null)}>
+                      Clear
+                    </Button>
+                  </>
+                ) : (
+                  <Text>No one has been selected yet.</Text>
+                )}
               </Box>
             </Box>
             <Divider />
@@ -105,6 +134,10 @@ function App() {
                 records={data.contents}
                 onRowClick={(item) => {
                   console.log(item)
+
+                  const arr = []
+                  arr.push(item)
+                  setSelectedMember(arr)
                 }}
               />
             </Box>
