@@ -220,7 +220,7 @@ function App() {
                     </Button> */}
                   </>
                 ) : (
-                  <Text>No one has been selected yet.</Text>
+                  <Text>Please select an author from the list below.</Text>
                 )}
               </Box>
             </Box>
