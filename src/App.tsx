@@ -65,7 +65,7 @@ const useMicroCMSData = (endpoint: string): SwrResponse => {
 
 function App() {
   const params =
-    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title&limit=100"
+    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment&limit=100"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
@@ -142,8 +142,6 @@ function App() {
     return <div>Error occurred.</div>
   }
 
-  console.log("records", records)
-
   return (
     <>
       <ToastContainer />
@@ -168,7 +166,6 @@ function App() {
                         { accessor: "name" },
                         {
                           accessor: "department",
-                          render: (record) => record.department.title,
                           sortable: true,
                         },
                         { accessor: "email" },
@@ -225,7 +222,6 @@ function App() {
                       { accessor: "name", sortable: true },
                       {
                         accessor: "department",
-                        render: (record) => record.department.title,
                         sortable: true,
                       },
                       { accessor: "email" },
