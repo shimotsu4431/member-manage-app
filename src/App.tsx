@@ -17,12 +17,10 @@ import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { MICROCMS_ORIGIN, API_BASE_URL, API_KEY } from "../config/microcms.ts"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-const API_KEY = "Bb5vrvSJWHjL9OuummJntT7E5QOHCUOpk2jp"
-const BASE_URL = "https://uxszenfmbz.microcms.io/api/v1"
 
 type Message = {
   id?: string // iFrame識別子
@@ -53,7 +51,7 @@ const microcmsPostData = (data: Data) => {
       ...data,
       action: "MICROCMS_POST_DATA",
     },
-    "https://uxszenfmbz.microcms.io"
+    MICROCMS_ORIGIN
   )
 }
 
@@ -63,7 +61,7 @@ const microcmsUpdateStyle = (style: Style) => {
       ...style,
       action: "MICROCMS_UPDATE_STYLE",
     },
-    "https://uxszenfmbz.microcms.io"
+    MICROCMS_ORIGIN
   )
 }
 
@@ -83,7 +81,7 @@ const useMicroCMSData = (endpoint: string): swrResponse => {
     return response.data
   }
 
-  const { data, error } = useSWR(`${BASE_URL}/${endpoint}`, fetcher)
+  const { data, error } = useSWR(`${API_BASE_URL}/${endpoint}`, fetcher)
 
   return {
     data,
@@ -203,10 +201,18 @@ function App() {
     <>
       <ToastContainer />
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Box>
+        <Box
+          p={16}
+          sx={(theme) => ({
+            border: `1px solid ${theme.colors.dark[2]}`,
+            borderRadius: theme.radius.md,
+          })}
+        >
           <Stack>
-            <Box mt={20} h={150} mb={20}>
-              <Title order={2}>Selected</Title>
+            <Box h={150} mb={20}>
+              <Title order={2} size="h3">
+                Selected
+              </Title>
               <Box mt={10}>
                 {selectedMember ? (
                   <>
@@ -253,8 +259,10 @@ function App() {
               </Box>
             </Box>
             <Divider />
-            <Box mt={20}>
-              <Title order={2}>Members</Title>
+            <Box mt={10}>
+              <Title order={2} size="h3">
+                Members
+              </Title>
               <DataTable
                 mt={20}
                 highlightOnHover
@@ -286,14 +294,10 @@ function App() {
                 ]}
                 records={records}
                 onRowClick={(item) => {
-                  console.log(item)
-
                   const arr = []
                   arr.push(item)
                   setSelectedMember(arr)
-
                   submitData(item)
-
                   toast.success("success select member!")
                 }}
                 sortStatus={sortStatus}
