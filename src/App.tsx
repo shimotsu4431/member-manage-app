@@ -17,33 +17,12 @@ import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+
 import { MICROCMS_ORIGIN, API_BASE_URL, API_KEY } from "../config/microcms.ts"
+import { Data, Style, SwrResponse, Member } from "../types"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-type Message = {
-  id?: string // iFrame識別子
-  title?: string
-  description?: string
-  imageUrl?: string
-  updatedAt?: Date
-  data: Member | null
-}
-
-type Data = {
-  id: string
-  message: Message
-}
-
-type StyleMessage = {
-  height: number
-}
-
-type Style = {
-  id: string
-  message: StyleMessage
-}
 
 const microcmsPostData = (data: Data) => {
   window.parent.postMessage(
@@ -65,13 +44,7 @@ const microcmsUpdateStyle = (style: Style) => {
   )
 }
 
-type swrResponse = {
-  data: MemberResponse
-  isLoading: boolean
-  isError: boolean
-}
-
-const useMicroCMSData = (endpoint: string): swrResponse => {
+const useMicroCMSData = (endpoint: string): SwrResponse => {
   const fetcher = async (url: string) => {
     const response = await axios.get(url, {
       headers: {
@@ -90,37 +63,8 @@ const useMicroCMSData = (endpoint: string): swrResponse => {
   }
 }
 
-type Member = {
-  id: string
-  name: string
-  age: number
-  email: string
-  joined: string
-  icon: {
-    url: string
-    height: number
-    width: number
-  }
-  department: {
-    id: string
-    createdAt: string
-    publishedAt: string
-    revisedAt: string
-    title: string
-    updatedAt: string
-  }
-}
-
-type MemberResponse = {
-  limit: number
-  offset: number
-  totalCount: number
-  contents: Member[]
-}
-
 function App() {
-  const params =
-    "?fields=id%2Cicon%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title"
+  const params = "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
@@ -209,15 +153,14 @@ function App() {
           })}
         >
           <Stack>
-            <Box h={150} mb={20}>
+            <Box h={150} mb={10}>
               <Title order={2} size="h3">
                 Selected
               </Title>
-              <Box mt={10}>
+              <Box>
                 {selectedMember ? (
                   <>
                     <DataTable
-                      mt={20}
                       columns={[
                         { accessor: "name" },
                         {
@@ -240,7 +183,7 @@ function App() {
                       records={selectedMember}
                     />
                     <Button
-                      mt={10}
+                      mt={4}
                       variant="outline"
                       color="dark"
                       size="xs"
@@ -259,12 +202,11 @@ function App() {
               </Box>
             </Box>
             <Divider />
-            <Box mt={10}>
+            <Box>
               <Title order={2} size="h3">
                 Members
               </Title>
               <DataTable
-                mt={20}
                 highlightOnHover
                 columns={[
                   {
