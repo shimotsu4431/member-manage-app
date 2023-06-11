@@ -11,14 +11,7 @@ export type Member = {
   email: string
   joined: string
   iconUrl: string
-  department: {
-    id: string
-    createdAt: string
-    publishedAt: string
-    revisedAt: string
-    title: string
-    updatedAt: string
-  }
+  department: string
 }
 
 export type MemberResponse = {

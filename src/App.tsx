@@ -127,7 +127,7 @@ function App() {
         id,
         message: {
           title: item ? item.name : "",
-          description: item ? item.email : "",
+          description: item ? `${item.department} Dept.` : "",
           imageUrl: item ? item.iconUrl : undefined,
           data: item ? item : null,
         },
