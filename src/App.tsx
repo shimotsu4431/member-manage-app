@@ -66,7 +66,7 @@ const useMicroCMSData = (endpoint: string): SwrResponse => {
 
 function App() {
   const params =
-    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment%iconUrl&limit=100"
+    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment%2CiconUrl&limit=100"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
@@ -178,7 +178,7 @@ function App() {
                               <Avatar
                                 mr={8}
                                 radius="xl"
-                                src={`https://i.pravatar.cc/150?img=${record.iconUrl}`}
+                                src={record.iconUrl}
                               ></Avatar>
                               <Text>{record.name}</Text>
                             </Box>
@@ -252,7 +252,7 @@ function App() {
                             <Avatar
                               mr={8}
                               radius="xl"
-                              src={`https://i.pravatar.cc/150?img=${record.iconUrl}`}
+                              src={record.iconUrl}
                             ></Avatar>
                             <Text>{record.name}</Text>
                           </Box>
