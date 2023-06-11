@@ -1,7 +1,7 @@
 import {
   Avatar,
   Box,
-  Button,
+  // Button,
   Divider,
   MantineProvider,
   Stack,
@@ -148,22 +148,18 @@ function App() {
     <>
       <ToastContainer autoClose={1200} />
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Box
-          p={16}
-          sx={(theme) => ({
-            border: `1px solid ${theme.colors.dark[2]}`,
-            borderRadius: theme.radius.md,
-          })}
-        >
+        <Box>
           <Stack>
-            <Box h={150} mb={10}>
-              <Title order={2} size="h3">
-                Selected
-              </Title>
+            <Box>
               <Box>
                 {selectedMember ? (
                   <>
                     <DataTable
+                      sx={{
+                        padding: "4px",
+                        border: "2px solid #563bff",
+                        borderRadius: 4,
+                      }}
                       columns={[
                         {
                           accessor: "name",
@@ -202,7 +198,7 @@ function App() {
                       ]}
                       records={selectedMember}
                     />
-                    <Button
+                    {/* <Button
                       mt={4}
                       variant="outline"
                       color="dark"
@@ -215,7 +211,7 @@ function App() {
                       }}
                     >
                       Clear
-                    </Button>
+                    </Button> */}
                   </>
                 ) : (
                   <Text>No one has been selected yet.</Text>
@@ -224,8 +220,8 @@ function App() {
             </Box>
             <Divider />
             <Box>
-              <Title order={2} size="h3">
-                Members
+              <Title order={2} size="h4">
+                Member List
               </Title>
               {records && records.length >= 1 ? (
                 <>
