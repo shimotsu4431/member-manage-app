@@ -278,7 +278,7 @@ function App() {
                       setSelectedMember(arr)
                       submitData(item)
                       toast.dismiss()
-                      toast.success("success select member!")
+                      toast.success("success select Author!")
                     }}
                     sortStatus={sortStatus}
                     onSortStatusChange={setSortStatus}
