@@ -148,7 +148,13 @@ function App() {
     <>
       <ToastContainer autoClose={1200} />
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <Box>
+        <Box
+          sx={{
+            padding: "8px",
+            border: "1px solid #eee",
+            borderRadius: 4,
+          }}
+        >
           <Stack>
             <Box>
               <Box>
@@ -157,7 +163,7 @@ function App() {
                     <DataTable
                       sx={{
                         padding: "4px",
-                        border: "2px solid #563bff",
+                        border: "1px solid #563bff",
                         borderRadius: 4,
                       }}
                       columns={[
