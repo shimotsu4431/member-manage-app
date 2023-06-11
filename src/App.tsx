@@ -169,7 +169,6 @@ function App() {
                       columns={[
                         {
                           accessor: "name",
-                          sortable: true,
                           render: (record) => (
                             <Box
                               sx={{
@@ -188,10 +187,9 @@ function App() {
                         },
                         {
                           accessor: "department",
-                          sortable: true,
                         },
                         { accessor: "email" },
-                        { accessor: "age", sortable: true },
+                        { accessor: "age" },
                         {
                           accessor: "joined",
                           render: (record) =>
@@ -199,7 +197,6 @@ function App() {
                               .utc(record.joined)
                               .tz("Asia/Tokyo")
                               .format("YYYY/MM/DD"),
-                          sortable: true,
                         },
                       ]}
                       records={selectedMember}
