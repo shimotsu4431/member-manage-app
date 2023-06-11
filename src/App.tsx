@@ -146,7 +146,7 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer autoClose={1200} />
       <MantineProvider withGlobalStyles withNormalizeCSS>
         <Box
           p={16}
@@ -210,6 +210,7 @@ function App() {
                       onClick={() => {
                         setSelectedMember(null)
                         submitData(null)
+                        toast.dismiss()
                         toast.success("success clear member!")
                       }}
                     >
@@ -280,6 +281,7 @@ function App() {
                       arr.push(item)
                       setSelectedMember(arr)
                       submitData(item)
+                      toast.dismiss()
                       toast.success("success select member!")
                     }}
                     sortStatus={sortStatus}
