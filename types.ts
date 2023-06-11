@@ -10,6 +10,7 @@ export type Member = {
   age: number
   email: string
   joined: string
+  iconUrl: string
   department: {
     id: string
     createdAt: string

@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -65,7 +66,7 @@ const useMicroCMSData = (endpoint: string): SwrResponse => {
 
 function App() {
   const params =
-    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment&limit=100"
+    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment%iconUrl&limit=100"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
@@ -127,6 +128,7 @@ function App() {
         message: {
           title: item ? item.name : "",
           description: item ? item.email : "",
+          imageUrl: item ? item.iconUrl : "",
           data: item ? item : null,
         },
       })
@@ -163,7 +165,25 @@ function App() {
                   <>
                     <DataTable
                       columns={[
-                        { accessor: "name" },
+                        {
+                          accessor: "name",
+                          sortable: true,
+                          render: (record) => (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Avatar
+                                mr={8}
+                                radius="xl"
+                                src={`https://i.pravatar.cc/150?img=${record.iconUrl}`}
+                              ></Avatar>
+                              <Text>{record.name}</Text>
+                            </Box>
+                          ),
+                        },
                         {
                           accessor: "department",
                           sortable: true,
@@ -219,7 +239,25 @@ function App() {
                         render: (record) =>
                           records && records.indexOf(record) + 1,
                       },
-                      { accessor: "name", sortable: true },
+                      {
+                        accessor: "name",
+                        sortable: true,
+                        render: (record) => (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Avatar
+                              mr={8}
+                              radius="xl"
+                              src={`https://i.pravatar.cc/150?img=${record.iconUrl}`}
+                            ></Avatar>
+                            <Text>{record.name}</Text>
+                          </Box>
+                        ),
+                      },
                       {
                         accessor: "department",
                         sortable: true,
