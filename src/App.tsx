@@ -64,7 +64,8 @@ const useMicroCMSData = (endpoint: string): SwrResponse => {
 }
 
 function App() {
-  const params = "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title"
+  const params =
+    "?fields=id%2Cname%2Cage%2Cemail%2Cjoined%2Cdepartment.title&limit=100"
   const { data, isLoading, isError } = useMicroCMSData(`members${params}`)
 
   const [selectedMember, setSelectedMember] = useState<Member[] | null>(null)
@@ -141,6 +142,8 @@ function App() {
     return <div>Error occurred.</div>
   }
 
+  console.log("records", records)
+
   return (
     <>
       <ToastContainer />
@@ -206,45 +209,54 @@ function App() {
               <Title order={2} size="h3">
                 Members
               </Title>
-              <DataTable
-                highlightOnHover
-                columns={[
-                  {
-                    accessor: "index",
-                    title: "#",
-                    textAlignment: "right",
-                    width: 40,
-                    render: (record) => records && records.indexOf(record) + 1,
-                  },
-                  { accessor: "name", sortable: true },
-                  {
-                    accessor: "department",
-                    render: (record) => record.department.title,
-                    sortable: true,
-                  },
-                  { accessor: "email" },
-                  { accessor: "age", sortable: true },
-                  {
-                    accessor: "joined",
-                    render: (record) =>
-                      dayjs
-                        .utc(record.joined)
-                        .tz("Asia/Tokyo")
-                        .format("YYYY/MM/DD"),
-                    sortable: true,
-                  },
-                ]}
-                records={records}
-                onRowClick={(item) => {
-                  const arr = []
-                  arr.push(item)
-                  setSelectedMember(arr)
-                  submitData(item)
-                  toast.success("success select member!")
-                }}
-                sortStatus={sortStatus}
-                onSortStatusChange={setSortStatus}
-              />
+              {records && records.length >= 1 ? (
+                <>
+                  <DataTable
+                    highlightOnHover
+                    columns={[
+                      {
+                        accessor: "index",
+                        title: "#",
+                        textAlignment: "right",
+                        width: 40,
+                        render: (record) =>
+                          records && records.indexOf(record) + 1,
+                      },
+                      { accessor: "name", sortable: true },
+                      {
+                        accessor: "department",
+                        render: (record) => record.department.title,
+                        sortable: true,
+                      },
+                      { accessor: "email" },
+                      { accessor: "age", sortable: true },
+                      {
+                        accessor: "joined",
+                        render: (record) =>
+                          dayjs
+                            .utc(record.joined)
+                            .tz("Asia/Tokyo")
+                            .format("YYYY/MM/DD"),
+                        sortable: true,
+                      },
+                    ]}
+                    records={records}
+                    onRowClick={(item) => {
+                      const arr = []
+                      arr.push(item)
+                      setSelectedMember(arr)
+                      submitData(item)
+                      toast.success("success select member!")
+                    }}
+                    sortStatus={sortStatus}
+                    onSortStatusChange={setSortStatus}
+                  />
+                </>
+              ) : (
+                <>
+                  <Text>There are no members in the member list.</Text>
+                </>
+              )}
             </Box>
           </Stack>
         </Box>
