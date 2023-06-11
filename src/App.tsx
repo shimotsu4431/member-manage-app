@@ -128,7 +128,7 @@ function App() {
         message: {
           title: item ? item.name : "",
           description: item ? item.email : "",
-          imageUrl: item ? item.iconUrl : "",
+          imageUrl: item ? item.iconUrl : undefined,
           data: item ? item : null,
         },
       })
