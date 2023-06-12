@@ -113,7 +113,7 @@ function App() {
         microcmsUpdateStyle({
           id: e.data.id,
           message: {
-            height: 240,
+            height: 360,
           },
         })
       }
