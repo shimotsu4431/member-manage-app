@@ -19,7 +19,6 @@ import timezone from "dayjs/plugin/timezone"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import { API_BASE_URL, API_KEY } from "../config/microcms.ts"
 import { Data, Style, SwrResponse, Member } from "../types"
 
 dayjs.extend(utc)
@@ -49,13 +48,16 @@ const useMicroCMSData = (endpoint: string): SwrResponse => {
   const fetcher = async (url: string) => {
     const response = await axios.get(url, {
       headers: {
-        "X-API-KEY": API_KEY,
+        "X-API-KEY": import.meta.env.VITE_API_KEY,
       },
     })
     return response.data
   }
 
-  const { data, error } = useSWR(`${API_BASE_URL}/${endpoint}`, fetcher)
+  const { data, error } = useSWR(
+    `${import.meta.env.VITE_API_BASE_URL}/${endpoint}`,
+    fetcher
+  )
 
   return {
     data,
@@ -123,8 +125,6 @@ function App() {
   const submitData = useCallback(
     (item: Member | null) => {
       setExtData(item)
-
-      console.log(item)
 
       microcmsPostData({
         id,
