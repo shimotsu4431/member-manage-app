@@ -123,9 +123,13 @@ function App() {
   const submitData = useCallback(
     (item: Member | null) => {
       setExtData(item)
+
+      console.log(item)
+
       microcmsPostData({
         id,
         message: {
+          id: item ? item.id : "",
           title: item ? item.name : "",
           description: item ? `${item.department} Dept.` : "",
           imageUrl: item ? item.iconUrl : undefined,
@@ -143,9 +147,6 @@ function App() {
   if (isError) {
     return <div>Error occurred.</div>
   }
-
-  console.log("===================")
-  console.log(import.meta.env.VITE_MICROCMS_ORIGIN)
 
   return (
     <>
