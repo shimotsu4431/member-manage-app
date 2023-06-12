@@ -19,7 +19,7 @@ import timezone from "dayjs/plugin/timezone"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import { MICROCMS_ORIGIN, API_BASE_URL, API_KEY } from "../config/microcms.ts"
+import { API_BASE_URL, API_KEY } from "../config/microcms.ts"
 import { Data, Style, SwrResponse, Member } from "../types"
 
 dayjs.extend(utc)
@@ -31,7 +31,7 @@ const microcmsPostData = (data: Data) => {
       ...data,
       action: "MICROCMS_POST_DATA",
     },
-    MICROCMS_ORIGIN
+    import.meta.env.MICROCMS_ORIGIN
   )
 }
 
@@ -41,7 +41,7 @@ const microcmsUpdateStyle = (style: Style) => {
       ...style,
       action: "MICROCMS_UPDATE_STYLE",
     },
-    MICROCMS_ORIGIN
+    import.meta.env.MICROCMS_ORIGIN
   )
 }
 
