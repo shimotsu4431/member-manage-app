@@ -31,7 +31,7 @@ const microcmsPostData = (data: Data) => {
       ...data,
       action: "MICROCMS_POST_DATA",
     },
-    import.meta.env.MICROCMS_ORIGIN
+    import.meta.env.VITE_MICROCMS_ORIGIN
   )
 }
 
@@ -41,7 +41,7 @@ const microcmsUpdateStyle = (style: Style) => {
       ...style,
       action: "MICROCMS_UPDATE_STYLE",
     },
-    import.meta.env.MICROCMS_ORIGIN
+    import.meta.env.VITE_MICROCMS_ORIGIN
   )
 }
 
@@ -145,7 +145,7 @@ function App() {
   }
 
   console.log("===================")
-  console.log(import.meta.env.MICROCMS_ORIGIN)
+  console.log(import.meta.env.VITE_MICROCMS_ORIGIN)
 
   return (
     <>
