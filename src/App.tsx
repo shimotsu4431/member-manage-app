@@ -144,6 +144,9 @@ function App() {
     return <div>Error occurred.</div>
   }
 
+  console.log("===================")
+  console.log(import.meta.env.MICROCMS_ORIGIN)
+
   return (
     <>
       <ToastContainer autoClose={1200} />
