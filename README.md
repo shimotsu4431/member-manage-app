@@ -14,7 +14,7 @@ yarn dev
 ```
 ご利用の環境に合わせて、以下の環境変数をセットしてください。
 
-VITE_MICROCMS_ORIGIN="XXXX" // 拡張フィールドを利用するmicroCMSのサービスドメイン
-VITE_API_BASE_URL="XXXX" // データソース用のmicroCMSのエンドポイント （例）https://xxxxx.microcms.io/api/v1
-VITE_API_KEY="XXXX" // データソース用のmicroCMSのAPIキー
+VITE_MICROCMS_ORIGIN="" // 拡張フィールドを利用するmicroCMSのサービスドメイン
+VITE_API_BASE_URL="" // データソース用のmicroCMSのエンドポイント （例）`https://xxxxx.microcms.io/api/v1`
+VITE_API_KEY="" // データソース用のmicroCMSのAPIキー
 ```
