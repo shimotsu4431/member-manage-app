@@ -221,7 +221,7 @@ function App() {
                     </Button> */}
                   </>
                 ) : (
-                  <Text>Please select an author from the list below.</Text>
+                  <Text>Please select a member from the list below.</Text>
                 )}
               </Box>
             </Box>
@@ -285,7 +285,7 @@ function App() {
                       setSelectedMember(arr)
                       submitData(item)
                       toast.dismiss()
-                      toast.success("success select Author!")
+                      toast.success("success select a member!")
                     }}
                     sortStatus={sortStatus}
                     onSortStatusChange={setSortStatus}
