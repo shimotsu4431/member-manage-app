@@ -120,6 +120,8 @@ function App() {
         })
       }
     })
+
+    console.log("location.href", location.href)
   }, [])
 
   const submitData = useCallback(
